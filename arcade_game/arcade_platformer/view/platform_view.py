@@ -562,23 +562,21 @@ class PlatformerView(arcade.View):
         )
 
     def handle_voice_command(self):
-        # logging.info("here")
-        message = self.speech_recognition.current_message()
-        if(message=="do nothing"):
-            return 
-        if(message=="jump"):
-            self.game_player.jump()
-        elif(message=="right"):
-            self.game_player.move_right()
-        elif(message=="left"):
-            self.game_player.move_left()
-        elif(message=="up"):
-            self.game_player.move_up()
-        elif(message=="down"):
-            self.game_player.move_down()
-        elif(message=="stop"):
-            self.game_player.reset_change_x()
-            if self.physics_engine.is_on_ladder():
-                self.game_player.reset_change_y()
+        if not self.speech_recognition.message_queue.empty():
+            message = self.speech_recognition.message_queue.get()
+            if(message=="jump"):
+                self.game_player.jump()
+            elif(message=="right"):
+                self.game_player.move_right()
+            elif(message=="left"):
+                self.game_player.move_left()
+            elif(message=="up"):
+                self.game_player.move_up()
+            elif(message=="down"):
+                self.game_player.move_down()
+            elif(message=="stop"):
+                self.game_player.reset_change_x()
+                if self.physics_engine.is_on_ladder():
+                    self.game_player.reset_change_y()
 
         # self.speech_recognition.message_queue.put("do nothing")
