@@ -108,7 +108,6 @@ class Player:
         self.sprite.change_y = 0
 
     def jump(self):
-        logging.info("jump")
         if self.physics_engine.can_jump():
             self.sprite.change_y = PLAYER_JUMP_SPEED
             # Play the jump sound

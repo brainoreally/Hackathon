@@ -32,7 +32,7 @@ class PlatformerView(arcade.View):
         self.goals = None
         self.traps = None
 
-        self.font_size = 20
+        self.font_size = 16
         # Avoids leaving the mouse pointer in the middle
         self.window.set_mouse_visible(False)
 
@@ -382,7 +382,7 @@ class PlatformerView(arcade.View):
         plus a time bonus
         """
         self.level_score = 0
-        self.player.score += (self.level_score + round(1000 / self.get_game_time()) * (self.life_count + 1))
+        self.player.score += (self.level_score + round((1000 * self.level) / self.get_game_time()) * (self.life_count + 1))
         return self.player.score
 
     def on_draw(self):
@@ -419,7 +419,7 @@ class PlatformerView(arcade.View):
         # First set a black background for a shadow effect
         arcade.draw_text(
             "Score:",
-            start_x=260 + self.view_left,
+            start_x=600 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.RED,
             font_size=self.font_size 
@@ -427,7 +427,7 @@ class PlatformerView(arcade.View):
         # Now in white, slightly shifted
         arcade.draw_text(
             "Score:",
-            start_x=262 + self.view_left,
+            start_x=602 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.WHITE,
             font_size=self.font_size 
@@ -435,7 +435,7 @@ class PlatformerView(arcade.View):
 
         arcade.draw_text(
             str(self.level_score),
-            start_x=420 + self.view_left,
+            start_x=700 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.RED,
             font_size=self.font_size 
@@ -443,7 +443,7 @@ class PlatformerView(arcade.View):
         # Now in white, slightly shifted
         arcade.draw_text(
             str(self.level_score),
-            start_x=422 + self.view_left,
+            start_x=702 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.WHITE,
             font_size=self.font_size 
@@ -452,7 +452,7 @@ class PlatformerView(arcade.View):
         # First set a black background for a shadow effect
         arcade.draw_text(
             "Total:",
-            start_x=510 + self.view_left,
+            start_x=750 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.RED,
             font_size=self.font_size 
@@ -460,7 +460,7 @@ class PlatformerView(arcade.View):
         # Now in white, slightly shifted
         arcade.draw_text(
             "Total:",
-            start_x=512 + self.view_left,
+            start_x=752 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.WHITE,
             font_size=self.font_size 
@@ -468,7 +468,7 @@ class PlatformerView(arcade.View):
 
         arcade.draw_text(
             str(self.player.score),
-            start_x=670 + self.view_left,
+            start_x=850 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.RED,
             font_size=self.font_size 
@@ -476,7 +476,7 @@ class PlatformerView(arcade.View):
         # Now in white, slightly shifted
         arcade.draw_text(
             str(self.player.score),
-            start_x=672 + self.view_left,
+            start_x=852 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.WHITE,
             font_size=self.font_size 
@@ -488,7 +488,7 @@ class PlatformerView(arcade.View):
         """
         arcade.draw_text(
             "Lives:",
-            start_x=845 + self.view_left,
+            start_x=905 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.RED,
             font_size=self.font_size 
@@ -496,7 +496,7 @@ class PlatformerView(arcade.View):
         # Now in white, slightly shifted
         arcade.draw_text(
             "Lives:",
-            start_x=847 + self.view_left,
+            start_x=907 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.WHITE,
             font_size=self.font_size
@@ -504,7 +504,7 @@ class PlatformerView(arcade.View):
 
         arcade.draw_text(
             str(self.life_count),
-            start_x=960 + self.view_left,
+            start_x=980 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.RED,
             font_size=self.font_size 
@@ -512,7 +512,7 @@ class PlatformerView(arcade.View):
         # Now in white, slightly shifted
         arcade.draw_text(
             str(self.life_count),
-            start_x=962 + self.view_left,
+            start_x=982 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.WHITE,
             font_size=self.font_size 
@@ -525,7 +525,7 @@ class PlatformerView(arcade.View):
         """
         # First set a black background for a shadow effect
         arcade.draw_text(
-            "Time:",
+            self.player.name + " - Level: " + str(self.level) + " - Time:",
             start_x=30 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.RED,
@@ -533,7 +533,7 @@ class PlatformerView(arcade.View):
         )
         # Now in white, slightly shifted
         arcade.draw_text(
-            "Time:",
+            self.player.name + " - Level: " + str(self.level) + " - Time:",
             start_x=32 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.WHITE,
@@ -545,7 +545,7 @@ class PlatformerView(arcade.View):
 
         arcade.draw_text(
             str(timer_text),
-            start_x=170 + self.view_left,
+            start_x=260 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.RED,
             font_size=self.font_size 
@@ -553,7 +553,7 @@ class PlatformerView(arcade.View):
         # Now in white, slightly shifted
         arcade.draw_text(
             str(timer_text),
-            start_x=172 + self.view_left,
+            start_x=262 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.WHITE,
             font_size=self.font_size 
