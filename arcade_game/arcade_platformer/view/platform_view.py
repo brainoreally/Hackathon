@@ -310,6 +310,7 @@ class PlatformerView(arcade.View):
         Arguments:
             delta_time {float} -- How much time since the last call
         """
+        self.handle_voice_command()
 
         # Update the player animation
         self.player.update_animation(delta_time)
@@ -535,3 +536,22 @@ class PlatformerView(arcade.View):
             color=arcade.csscolor.WHITE,
             font_size=30
         )
+
+    def handle_voice_command(self):
+        message = self.message_queue.get()
+        if(message=="jump"):
+            self.game_player.jump()
+        elif(message=="right"):
+            self.game_player.move_right()
+        elif(message=="left"):
+            self.game_player.move_left()
+        elif(message=="up"):
+            self.game_player.move_up()
+        elif(message=="down"):
+            self.game_player.move_down()
+        elif(message=="stop"):
+            self.game_player.reset_change_x()
+            if self.physics_engine.is_on_ladder():
+                self.game_player.reset_change_y()
+
+        self.message_queue.put("do nothing")
