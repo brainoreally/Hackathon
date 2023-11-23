@@ -1,8 +1,12 @@
 import arcade
+from threading import Thread
 
 from arcade_game.arcade_platformer.config.config import SCREEN_WIDTH, SCREEN_HEIGHT, ASSETS_PATH
 from . import platform_view
 from arcade_game.arcade_platformer.player.player import Player
+from arcade_game.arcade_platformer.helpers.speech_recognition import SpeechRecognition
+from log.config_log import logger
+
 
 
 class WelcomeView(arcade.View):
@@ -13,10 +17,12 @@ class WelcomeView(arcade.View):
     You do not have to modify these to complete the mandatory challenges.
     """
 
-    def __init__(self, player: Player) -> None:
+    def __init__(self, player: Player, speech_recognition: SpeechRecognition) -> None:
         super().__init__()
 
         self.player = player
+
+        self.speech_recognition = speech_recognition
 
         self.game_view = None
 
@@ -24,7 +30,7 @@ class WelcomeView(arcade.View):
         self.intro_sound = arcade.load_sound(
             str(ASSETS_PATH / "sounds" / "intro.wav")
         )
-        self.sound_player = self.intro_sound.play(volume=0.3, loop=True)
+        self.sound_player = self.intro_sound.play(volume=0, loop=True)
 
         # Find the title image in the images folder
         title_image_path = ASSETS_PATH / "images" / "welcome.png"
@@ -38,12 +44,21 @@ class WelcomeView(arcade.View):
         # Are we showing the instructions?
         self.show_instructions = False
 
+    def check_message_queue(self):
+        message = self.speech_recognition.latest_message
+        if (message):
+            logger.info(f"welcome view message {message}")
+            if(message=="start"):
+                self.start_game()
+                self.speech_recognition.message_queue.put("do nothing")
+
     def on_update(self, delta_time: float) -> None:
         """Manages the timer to toggle the instructions
 
         Arguments:
             delta_time -- time passed since last update
         """
+        self.check_message_queue()
 
         # First, count down the time
         self.display_timer -= delta_time
@@ -80,16 +95,13 @@ class WelcomeView(arcade.View):
             )
 
     def on_key_press(self, key: int, modifiers: int) -> None:
-        """Start the game when the user presses the enter key
-
-        Arguments:
-            key -- Which key was pressed
-            modifiers -- What modifiers were active
-        """
         if key == arcade.key.RETURN:
-            # Stop intro music
-            self.intro_sound.stop(self.sound_player)
-            # Launch Game view
-            self.game_view = platform_view.PlatformerView(self.player)
-            self.game_view.setup()
-            self.window.show_view(self.game_view)
+            self.start_game()
+    
+    def start_game(self) -> None:
+        # Stop intro music
+        self.intro_sound.stop(self.sound_player)
+        # Launch Game view
+        self.game_view = platform_view.PlatformerView(self.player, self.speech_recognition)
+        self.game_view.setup()
+        self.window.show_view(self.game_view)
