@@ -121,7 +121,7 @@ class PlayerNameView(arcade.View):
 
     def update_text(self):
         #print(f"updating the label with input text '{self.player_name_input_field.text}'")
-        self.player_name = self.player_name_input_field.text
+        self.player.name = self.player_name_input_field.text
 
     def launch_game(self):
         # Launch Game view
