@@ -11,7 +11,9 @@ from arcade_game.arcade_platformer.config.config import SCREEN_WIDTH, SCREEN_HEI
     TOP_VIEWPORT_MARGIN, BOTTOM_VIEWPORT_MARGIN, PLAYER_MOVE_SPEED, PLAYER_JUMP_SPEED
 from arcade_game.arcade_platformer.player.player import Player
 from . import game_over_view, winner_view
+
 from arcade_game.arcade_platformer.helpers.speech_recognition import SpeechRecognition
+from arcade_game.arcade_platformer.utils.leaderboard import Leaderboard
 
 
 class PlatformerView(arcade.View):
@@ -229,7 +231,7 @@ class PlatformerView(arcade.View):
             - Face the player forward
         """
         # Stop the speech recognition process
-        self.recognize_proc.terminate()
+        #self.recognize_proc.terminate()
 
         # Play the death sound
         arcade.play_sound(self.death_sound)
@@ -363,12 +365,19 @@ class PlatformerView(arcade.View):
             # Set the viewport, scrolling if necessary
             self.scroll_viewport()
 
+    def save_scores(self):
+        l = Leaderboard()
+        l.add_score(self.game_player.name, self.total_score)
+        l.save()
+        l.dump_scores()
+        
     def handle_game_over(self):
         """
         Game Over !
         """
         # Show the Game Over Screen
         self.total_score += self.level_score
+        self.save_scores()
         _game_over_view = game_over_view.GameOverView(self.game_player)
         self.window.show_view(_game_over_view)
 
