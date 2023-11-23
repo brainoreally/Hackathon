@@ -40,8 +40,9 @@ class PlatformerView(arcade.View):
         # We need a physics engine as well
         self.physics_engine = None
 
-        # Someplace to keep score
-        self.score = 0
+        # Someplace to keep score for level and game
+        self.level_score = 0
+        self.total_score = 0
 
         # Life count init
         self.life_count = TOTAL_LIFE_COUNT
@@ -260,17 +261,17 @@ class PlatformerView(arcade.View):
         """
 
         # Check for player left or right movement
-        if key in [arcade.key.LEFT, arcade.key.J]:  # Either left key or J key to go left
+        if key in [arcade.key.LEFT, arcade.key.A]:  # Either left key or A key to go left
             self.game_player.move_left()
 
-        elif key in [arcade.key.RIGHT, arcade.key.L]:  # Either right key or L key to go right
+        elif key in [arcade.key.RIGHT, arcade.key.D]:  # Either right key or D key to go right
             self.game_player.move_right()
 
         # Check if player can climb up or down
-        elif key in [arcade.key.UP, arcade.key.I]:  # Either up key or I key to go up
+        elif key in [arcade.key.UP, arcade.key.W]:  # Either up key or W key to go up
             self.game_player.move_up()
 
-        elif key in [arcade.key.DOWN, arcade.key.K]:  # Either down key or K key to down
+        elif key in [arcade.key.DOWN, arcade.key.D]:  # Either down key or D key to down
             self.game_player.move_down()
 
         # Check if player can jump
@@ -287,18 +288,18 @@ class PlatformerView(arcade.View):
         # Check for player left or right movement
         if key in [
             arcade.key.LEFT,
-            arcade.key.J,
+            arcade.key.A,
             arcade.key.RIGHT,
-            arcade.key.L,
+            arcade.key.D,
         ]:
             self.game_player.reset_change_x()
 
         # Check if player can climb up or down
         elif key in [
             arcade.key.UP,
-            arcade.key.I,
+            arcade.key.W,
             arcade.key.DOWN,
-            arcade.key.K,
+            arcade.key.S,
         ]:
             if self.physics_engine.is_on_ladder():
                 self.game_player.reset_change_y()
@@ -327,7 +328,7 @@ class PlatformerView(arcade.View):
 
         for coin in coins_hit:
             # Add the coin score to our score
-            self.score += int(coin.properties["point_value"])
+            self.level_score += int(coin.properties["point_value"])
 
             # Play the coin sound
             arcade.play_sound(self.coin_sound)
@@ -384,7 +385,7 @@ class PlatformerView(arcade.View):
         # Show the winner Screen
         _winner_view = winner_view.WinnerView(self.game_player)
         # Calculate final score
-        _winner_view.score = self.calculate_score()
+        _winner_view.score = self.calculate_score() + self.total_score
         self.window.show_view(_winner_view)
 
     def calculate_score(self) -> int:
@@ -392,7 +393,7 @@ class PlatformerView(arcade.View):
         The final score is the score (gained by collecting coins)
         plus a time bonus
         """
-        return self.score + (100 - self.get_game_time())
+        return self.level_score + (100 - self.get_game_time())
 
     def on_draw(self):
         """
@@ -422,31 +423,38 @@ class PlatformerView(arcade.View):
 
     def draw_score(self):
         """
-        Draw the score in the lower left
+        Draw the score in the top left
         """
-        # Find the coin image in the images folder
-        score_image_path = ASSETS_PATH / "images" / "items" / "coinGold.png"
-
-        # Load our score image
-        score_image = arcade.load_texture(score_image_path)
-        arcade.draw_texture_rectangle(
-            30 + self.view_left,
-            30 + self.view_bottom,
-            70, 70, score_image)
 
         # First set a black background for a shadow effect
         arcade.draw_text(
-            str(self.score),
-            start_x=60 + self.view_left,
-            start_y=15 + self.view_bottom,
+            "Score:",
+            start_x=430 + self.view_left,
+            start_y=615 + self.view_bottom,
             color=arcade.csscolor.BLACK,
             font_size=30
         )
         # Now in white, slightly shifted
         arcade.draw_text(
-            str(self.score),
-            start_x=62 + self.view_left,
-            start_y=17 + self.view_bottom,
+            "Score:",
+            start_x=432 + self.view_left,
+            start_y=615 + self.view_bottom,
+            color=arcade.csscolor.WHITE,
+            font_size=30
+        )
+
+        arcade.draw_text(
+            str(self.level_score),
+            start_x=620 + self.view_left,
+            start_y=615 + self.view_bottom,
+            color=arcade.csscolor.BLACK,
+            font_size=30
+        )
+        # Now in white, slightly shifted
+        arcade.draw_text(
+            str(self.level_score),
+            start_x=622 + self.view_left,
+            start_y=615 + self.view_bottom,
             color=arcade.csscolor.WHITE,
             font_size=30
         )
@@ -455,56 +463,75 @@ class PlatformerView(arcade.View):
         """
         Display the life count on the bottom left after the score
         """
-        # Find the heart images in the images folder
-        life_full_path = ASSETS_PATH / "images" / "HUD" / "hudHeart_full.png"
-        life_half_path = ASSETS_PATH / "images" / "HUD" / "hudHeart_half.png"
-        life_empty_path = ASSETS_PATH / "images" / "HUD" / "hudHeart_empty.png"
+        arcade.draw_text(
+            "Lives:",
+            start_x=830 + self.view_left,
+            start_y=615 + self.view_bottom,
+            color=arcade.csscolor.BLACK,
+            font_size=30
+        )
+        # Now in white, slightly shifted
+        arcade.draw_text(
+            "Lives:",
+            start_x=832 + self.view_left,
+            start_y=615 + self.view_bottom,
+            color=arcade.csscolor.WHITE,
+            font_size=30
+        )
 
-        # Display a full heart by default
-        life_image_path = life_full_path
-        if self.life_count == 2:  # display the half-full heart
-            life_image_path = life_half_path
-        elif self.life_count == 1:  # display the empty heart
-            life_image_path = life_empty_path
+        arcade.draw_text(
+            str(self.life_count),
+            start_x=950 + self.view_left,
+            start_y=615 + self.view_bottom,
+            color=arcade.csscolor.BLACK,
+            font_size=30
+        )
+        # Now in white, slightly shifted
+        arcade.draw_text(
+            str(self.life_count),
+            start_x=952 + self.view_left,
+            start_y=615 + self.view_bottom,
+            color=arcade.csscolor.WHITE,
+            font_size=30
+        )
 
-        # Load our score image
-        life_image = arcade.load_texture(life_image_path)
-        arcade.draw_texture_rectangle(
-            960 + self.view_left,
-            620 + self.view_bottom,
-            70, 70, life_image)
 
     def draw_timer(self):
         """
         Display the game timer on the bottom left after the life count
         """
-        # Find the coin image in the images folder
-        clock_image_path = ASSETS_PATH / "images" / "items" / "clock.png"
-
-        # Load our score image
-        clock_image = arcade.load_texture(clock_image_path)
-        arcade.draw_texture_rectangle(
-            170 + self.view_left,
-            30 + self.view_bottom,
-            35, 35, clock_image)
+        # First set a black background for a shadow effect
+        arcade.draw_text(
+            "Time:",
+            start_x=30 + self.view_left,
+            start_y=615 + self.view_bottom,
+            color=arcade.csscolor.BLACK,
+            font_size=30
+        )
+        # Now in white, slightly shifted
+        arcade.draw_text(
+            "Time:",
+            start_x=32 + self.view_left,
+            start_y=615 + self.view_bottom,
+            color=arcade.csscolor.WHITE,
+            font_size=30
+        )
 
         # Draw the timer in the lower left, after the score
         timer_text = str(self.get_game_time())
 
-        # First set a black background for a shadow effect
         arcade.draw_text(
-            timer_text,
-            start_x=190 + self.view_left,
-            start_y=15 + self.view_bottom,
+            str(timer_text),
+            start_x=220 + self.view_left,
+            start_y=615 + self.view_bottom,
             color=arcade.csscolor.BLACK,
             font_size=30
         )
-
-        # Now in white
+        # Now in white, slightly shifted
         arcade.draw_text(
-            timer_text,
-            start_x=192 + self.view_left,
-            start_y=17 + self.view_bottom,
+            str(timer_text),
+            start_x=222 + self.view_left,
+            start_y=615 + self.view_bottom,
             color=arcade.csscolor.WHITE,
             font_size=30
         )
