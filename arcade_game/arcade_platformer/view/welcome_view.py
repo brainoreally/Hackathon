@@ -1,9 +1,8 @@
 import arcade
 
 from arcade_game.arcade_platformer.config.config import SCREEN_WIDTH, SCREEN_HEIGHT, ASSETS_PATH
-from . import platform_view
+from . import platform_view, player_name_view
 from arcade_game.arcade_platformer.player.player import Player
-
 
 class WelcomeView(arcade.View):
     """
@@ -87,9 +86,9 @@ class WelcomeView(arcade.View):
             modifiers -- What modifiers were active
         """
         if key == arcade.key.RETURN:
+                       
             # Stop intro music
             self.intro_sound.stop(self.sound_player)
-            # Launch Game view
-            self.game_view = platform_view.PlatformerView(self.player)
-            self.game_view.setup()
-            self.window.show_view(self.game_view)
+            # Launch Enter Player Name view
+            self.player_name_view = player_name_view.PlayerNameView(self.player)
+            self.window.show_view(self.player_name_view)
