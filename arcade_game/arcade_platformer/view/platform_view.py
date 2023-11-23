@@ -37,6 +37,7 @@ class PlatformerView(arcade.View):
         self.goals = None
         self.traps = None
 
+        self.font_size = 20
         # Avoids leaving the mouse pointer in the middle
         self.window.set_mouse_visible(False)
 
@@ -418,6 +419,7 @@ class PlatformerView(arcade.View):
 
         # Draw the dynamic elements : play, score, life count
         self.player.draw()
+        arcade.draw_rectangle_filled((SCREEN_WIDTH / 2) + self.view_left, 625 + self.view_bottom, SCREEN_WIDTH, 50, arcade.color.BLACK)
         self.draw_score()
         self.draw_life_count()
         self.draw_timer()
@@ -426,14 +428,13 @@ class PlatformerView(arcade.View):
         """
         Draw the score in the top left
         """
-
         # First set a black background for a shadow effect
         arcade.draw_text(
             "Score:",
             start_x=260 + self.view_left,
             start_y=615 + self.view_bottom,
-            color=arcade.csscolor.BLACK,
-            font_size=30
+            color=arcade.csscolor.RED,
+            font_size=self.font_size 
         )
         # Now in white, slightly shifted
         arcade.draw_text(
@@ -441,15 +442,15 @@ class PlatformerView(arcade.View):
             start_x=262 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.WHITE,
-            font_size=30
+            font_size=self.font_size 
         )
 
         arcade.draw_text(
             str(self.level_score),
             start_x=420 + self.view_left,
             start_y=615 + self.view_bottom,
-            color=arcade.csscolor.BLACK,
-            font_size=30
+            color=arcade.csscolor.RED,
+            font_size=self.font_size 
         )
         # Now in white, slightly shifted
         arcade.draw_text(
@@ -457,7 +458,7 @@ class PlatformerView(arcade.View):
             start_x=422 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.WHITE,
-            font_size=30
+            font_size=self.font_size 
         )
 
         # First set a black background for a shadow effect
@@ -465,8 +466,8 @@ class PlatformerView(arcade.View):
             "Total:",
             start_x=510 + self.view_left,
             start_y=615 + self.view_bottom,
-            color=arcade.csscolor.BLACK,
-            font_size=30
+            color=arcade.csscolor.RED,
+            font_size=self.font_size 
         )
         # Now in white, slightly shifted
         arcade.draw_text(
@@ -474,15 +475,15 @@ class PlatformerView(arcade.View):
             start_x=512 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.WHITE,
-            font_size=30
+            font_size=self.font_size 
         )
 
         arcade.draw_text(
             str(self.total_score),
             start_x=670 + self.view_left,
             start_y=615 + self.view_bottom,
-            color=arcade.csscolor.BLACK,
-            font_size=30
+            color=arcade.csscolor.RED,
+            font_size=self.font_size 
         )
         # Now in white, slightly shifted
         arcade.draw_text(
@@ -490,7 +491,7 @@ class PlatformerView(arcade.View):
             start_x=672 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.WHITE,
-            font_size=30
+            font_size=self.font_size 
         )
 
     def draw_life_count(self):
@@ -501,8 +502,8 @@ class PlatformerView(arcade.View):
             "Lives:",
             start_x=845 + self.view_left,
             start_y=615 + self.view_bottom,
-            color=arcade.csscolor.BLACK,
-            font_size=30
+            color=arcade.csscolor.RED,
+            font_size=self.font_size 
         )
         # Now in white, slightly shifted
         arcade.draw_text(
@@ -510,15 +511,15 @@ class PlatformerView(arcade.View):
             start_x=847 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.WHITE,
-            font_size=30
+            font_size=self.font_size
         )
 
         arcade.draw_text(
             str(self.life_count),
             start_x=960 + self.view_left,
             start_y=615 + self.view_bottom,
-            color=arcade.csscolor.BLACK,
-            font_size=30
+            color=arcade.csscolor.RED,
+            font_size=self.font_size 
         )
         # Now in white, slightly shifted
         arcade.draw_text(
@@ -526,7 +527,7 @@ class PlatformerView(arcade.View):
             start_x=962 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.WHITE,
-            font_size=30
+            font_size=self.font_size 
         )
 
 
@@ -539,8 +540,8 @@ class PlatformerView(arcade.View):
             "Time:",
             start_x=30 + self.view_left,
             start_y=615 + self.view_bottom,
-            color=arcade.csscolor.BLACK,
-            font_size=30
+            color=arcade.csscolor.RED,
+            font_size=self.font_size 
         )
         # Now in white, slightly shifted
         arcade.draw_text(
@@ -548,7 +549,7 @@ class PlatformerView(arcade.View):
             start_x=32 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.WHITE,
-            font_size=30
+            font_size=self.font_size 
         )
 
         # Draw the timer in the lower left, after the score
@@ -558,8 +559,8 @@ class PlatformerView(arcade.View):
             str(timer_text),
             start_x=170 + self.view_left,
             start_y=615 + self.view_bottom,
-            color=arcade.csscolor.BLACK,
-            font_size=30
+            color=arcade.csscolor.RED,
+            font_size=self.font_size 
         )
         # Now in white, slightly shifted
         arcade.draw_text(
@@ -567,7 +568,7 @@ class PlatformerView(arcade.View):
             start_x=172 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.WHITE,
-            font_size=30
+            font_size=self.font_size 
         )
 
     def handle_voice_command(self):
