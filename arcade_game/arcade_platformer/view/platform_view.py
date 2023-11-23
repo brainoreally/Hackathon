@@ -93,6 +93,9 @@ class PlatformerView(arcade.View):
     def setup(self):
         """Sets up the game for the current level. This runs every time we load a new level"""
 
+        # Reset the level score
+        self.level_score = 0
+
         # Get the current map based on the level
         map_name = f"platform_level_{self.level:02}.tmx"
         map_path = ASSETS_PATH / map_name
@@ -355,7 +358,7 @@ class PlatformerView(arcade.View):
         if goals_hit:
             # Stop the speech recognition process
             self.recognize_proc.terminate()
-
+            self.total_score += self.level_score
             if self.level == 4:  # Game is finished : Victory !
                 self.handle_victory()
             else:
@@ -376,6 +379,7 @@ class PlatformerView(arcade.View):
         Game Over !
         """
         # Show the Game Over Screen
+        self.total_score += self.level_score
         _game_over_view = game_over_view.GameOverView(self.game_player)
         self.window.show_view(_game_over_view)
 
@@ -430,7 +434,7 @@ class PlatformerView(arcade.View):
         # First set a black background for a shadow effect
         arcade.draw_text(
             "Score:",
-            start_x=430 + self.view_left,
+            start_x=260 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.BLACK,
             font_size=30
@@ -438,7 +442,7 @@ class PlatformerView(arcade.View):
         # Now in white, slightly shifted
         arcade.draw_text(
             "Score:",
-            start_x=432 + self.view_left,
+            start_x=262 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.WHITE,
             font_size=30
@@ -446,7 +450,7 @@ class PlatformerView(arcade.View):
 
         arcade.draw_text(
             str(self.level_score),
-            start_x=620 + self.view_left,
+            start_x=420 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.BLACK,
             font_size=30
@@ -454,7 +458,40 @@ class PlatformerView(arcade.View):
         # Now in white, slightly shifted
         arcade.draw_text(
             str(self.level_score),
-            start_x=622 + self.view_left,
+            start_x=422 + self.view_left,
+            start_y=615 + self.view_bottom,
+            color=arcade.csscolor.WHITE,
+            font_size=30
+        )
+
+        # First set a black background for a shadow effect
+        arcade.draw_text(
+            "Total:",
+            start_x=510 + self.view_left,
+            start_y=615 + self.view_bottom,
+            color=arcade.csscolor.BLACK,
+            font_size=30
+        )
+        # Now in white, slightly shifted
+        arcade.draw_text(
+            "Total:",
+            start_x=512 + self.view_left,
+            start_y=615 + self.view_bottom,
+            color=arcade.csscolor.WHITE,
+            font_size=30
+        )
+
+        arcade.draw_text(
+            str(self.total_score),
+            start_x=670 + self.view_left,
+            start_y=615 + self.view_bottom,
+            color=arcade.csscolor.BLACK,
+            font_size=30
+        )
+        # Now in white, slightly shifted
+        arcade.draw_text(
+            str(self.total_score),
+            start_x=672 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.WHITE,
             font_size=30
@@ -466,7 +503,7 @@ class PlatformerView(arcade.View):
         """
         arcade.draw_text(
             "Lives:",
-            start_x=830 + self.view_left,
+            start_x=845 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.BLACK,
             font_size=30
@@ -474,7 +511,7 @@ class PlatformerView(arcade.View):
         # Now in white, slightly shifted
         arcade.draw_text(
             "Lives:",
-            start_x=832 + self.view_left,
+            start_x=847 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.WHITE,
             font_size=30
@@ -482,7 +519,7 @@ class PlatformerView(arcade.View):
 
         arcade.draw_text(
             str(self.life_count),
-            start_x=950 + self.view_left,
+            start_x=960 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.BLACK,
             font_size=30
@@ -490,7 +527,7 @@ class PlatformerView(arcade.View):
         # Now in white, slightly shifted
         arcade.draw_text(
             str(self.life_count),
-            start_x=952 + self.view_left,
+            start_x=962 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.WHITE,
             font_size=30
@@ -523,7 +560,7 @@ class PlatformerView(arcade.View):
 
         arcade.draw_text(
             str(timer_text),
-            start_x=220 + self.view_left,
+            start_x=170 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.BLACK,
             font_size=30
@@ -531,7 +568,7 @@ class PlatformerView(arcade.View):
         # Now in white, slightly shifted
         arcade.draw_text(
             str(timer_text),
-            start_x=222 + self.view_left,
+            start_x=172 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.WHITE,
             font_size=30
