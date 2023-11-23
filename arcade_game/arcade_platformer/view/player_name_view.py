@@ -65,7 +65,7 @@ class PlayerNameView(arcade.View):
             self.game_view = platform_view.PlatformerView(self.player)
             self.game_view.setup()
             self.window.show_view(self.game_view)
-'''
+    '''
 
     def draw_enter_player_name(self):
         """

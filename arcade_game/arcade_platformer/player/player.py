@@ -16,6 +16,7 @@ class Player:
             str(ASSETS_PATH / "sounds" / "jump.wav")
         )
         self.name = ""
+        self.score = 0
 
     def set_physics_engine(self, physics_engine: arcade.PhysicsEnginePlatformer):
         self.physics_engine = physics_engine

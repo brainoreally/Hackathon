@@ -37,7 +37,7 @@ class Leaderboard():
             name = item['name'].strip()
             if len(name) == 0:
                 name = 'Anonymous'
-            s += '%2d....%s....%s\n\n' % (i, item['score'], name)
+            s += '%2d       %s      %s\n\n' % (i, item['score'], name)
             i += 1
         return s
 
@@ -46,9 +46,6 @@ class Leaderboard():
         self.leaderboard.sort(key = lambda json: json['score'], reverse=True)
         if len(self.leaderboard) > 10:
             self.leaderboard.pop()
-
-        #bisect.insort(self.leaderboard, (score, name), key=lambda x: x[0])
-        #self.leaderboard.reverse()
 
     def save(self):
         with open(self.leaderfile, 'wb+') as f:

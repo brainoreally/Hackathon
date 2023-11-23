@@ -99,6 +99,5 @@ class GameOverView(arcade.View):
 
             # Re-launch the game
             game_view = game_over_leaderboard_view.GameOverLeaderboardView(self.player, self.speech_recognition)
-            game_view.setup()
             self.window.show_view(game_view)
 

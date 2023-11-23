@@ -41,9 +41,13 @@ class GameOverLeaderboardView(arcade.View):
         # Reset the viewport, necessary if we have a scrolling game, and we need
         # to reset the viewport back to the start, so we can see what we draw.
         arcade.set_viewport(0, SCREEN_WIDTH - 1, 0, SCREEN_HEIGHT - 1)
-
-    def setup(self):
-        self.display_leaderboard()
+        
+        self.manager = gui.UIManager()
+        self.manager.enable()
+        self.leaderboard = Leaderboard()
+        self.leaderboard.add_score(name=self.player.name, score=self.player.score)
+        self.leaderboard.save()
+        self.bg_tex = load_texture(":resources:gui_basic_assets/window/grey_panel.png")
 
     def on_update(self, delta_time: float) -> None:
         """Manages the timer to toggle the instructions
@@ -87,6 +91,8 @@ class GameOverLeaderboardView(arcade.View):
                 font_size=25,
             )
         self.manager.draw()
+        
+        self.display_leaderboard()
 
     def on_key_press(self, key: int, modifiers: int) -> None:
         """Restarts the game when the user presses the enter key
@@ -105,17 +111,13 @@ class GameOverLeaderboardView(arcade.View):
             self.window.show_view(game_view)
 
     def display_leaderboard(self):
-        self.manager = gui.UIManager()
-        self.manager.enable()
-        leaderboard = Leaderboard()
-        bg_tex = load_texture(":resources:gui_basic_assets/window/grey_panel.png")
         text_area = gui.UITextArea(x=100,
                                y=200,
                                width=400,
                                height=500,
                                font_name="Kenney Future",
                                font_size=16,
-                               text=leaderboard.get_as_text(),
+                               text=self.leaderboard.get_as_text(),
                                text_color=(0, 0, 0, 255))
         
         self.manager.add(arcade.gui.UIAnchorWidget(
@@ -123,8 +125,6 @@ class GameOverLeaderboardView(arcade.View):
                 anchor_y="center_y",
                 child=gui.UITexturePane(
                 text_area.with_space_around(right=5),
-                tex=bg_tex,
+                tex=self.bg_tex,
                 padding=(3, 3, 3, 3)
             )))
-
-        self.manager.draw()

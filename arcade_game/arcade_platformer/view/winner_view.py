@@ -39,7 +39,7 @@ class WinnerView(arcade.View):
         self.show_instructions = False
 
         # Record the calculated final score
-        self.score = 0
+        self.score = self.player.score
 
         # Reset the viewport, necessary if we have a scrolling game, and we need
         # to reset the viewport back to the start, so we can see what we draw.
