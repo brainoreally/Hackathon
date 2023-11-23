@@ -22,8 +22,24 @@ class Leaderboard():
         self.leaderboard.sort(key = lambda json: json['score'], reverse=True)
         i = 1
         for item in self.leaderboard:
-            print('%02d %s -> %s' % (i, item['score'], item['name']))
+            name = item['name'].strip()
+            if len(name) == 0:
+                name = 'Anonymous'
+            print('%02d %s -> %s' % (i, item['score'], name))
             i += 1
+
+    def get_as_text(self):
+        s = ""
+        
+        self.leaderboard.sort(key = lambda json: json['score'], reverse=True)
+        i = 1
+        for item in self.leaderboard:
+            name = item['name'].strip()
+            if len(name) == 0:
+                name = 'Anonymous'
+            s += '%2d....%s....%s\n\n' % (i, item['score'], name)
+            i += 1
+        return s
 
     def add_score(self, name, score):
         self.leaderboard.append({'name': name, 'score': score})

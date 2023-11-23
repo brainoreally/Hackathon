@@ -32,12 +32,15 @@ class Player:
 
         # Set up the appropriate textures
         walking_paths = [
-            texture_path / f"alienGreen_walk{x}.png" for x in (1, 2)
+            #texture_path / f"alienGreen_walk{x}.png" for x in (1, 2)  # TODO make configurable!!!!
+            texture_path / f"megaman_walk{x}.png" for x in (1, 2)
         ]
         climbing_paths = [
-            texture_path / f"alienGreen_climb{x}.png" for x in (1, 2)
+            #texture_path / f"alienGreen_climb{x}.png" for x in (1, 2)
+            texture_path / f"megaman_climb{x}.png" for x in (1, 2)
         ]
-        standing_path = texture_path / "alienGreen_stand.png"
+        #standing_path = texture_path / "alienGreen_stand.png"
+        standing_path = texture_path / "megaman_stand.png"
 
         # Load them all now
         walking_right_textures = [
