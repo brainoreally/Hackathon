@@ -22,9 +22,6 @@ class SpeechRecognition():
 
       self.latest_message = ""
 
-    def current_message(self):
-        return self.latest_message
-
     def speech_to_text_continuous(self, message_queue: Queue, api_key: str, speech_region: str):
         """
         Converts speech to text non-stop
@@ -97,6 +94,3 @@ class SpeechRecognition():
         
         while not done:
             time.sleep(.1)
-            if not self.message_queue.empty():
-                self.latest_message = self.message_queue.get()
-                logger.info(f"latest message {self.latest_message}")

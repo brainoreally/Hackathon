@@ -44,8 +44,8 @@ class WelcomeView(arcade.View):
         self.show_instructions = False
 
     def check_message_queue(self):
-        message = self.speech_recognition.latest_message
-        if (message):
+        if not self.speech_recognition.message_queue.empty():
+            message = self.speech_recognition.message_queue.get()
             logger.info(f"welcome view message {message}")
             if(message=="start"):
                 self.start_game()
