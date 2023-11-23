@@ -261,24 +261,21 @@ class PlatformerView(arcade.View):
 
         # Check for player left or right movement
         if key in [arcade.key.LEFT, arcade.key.J]:  # Either left key or J key to go left
-            self.player.change_x = -PLAYER_MOVE_SPEED
+            self.game_player.move_left()
+
         elif key in [arcade.key.RIGHT, arcade.key.L]:  # Either right key or L key to go right
-            self.player.change_x = PLAYER_MOVE_SPEED
+            self.game_player.move_right()
 
         # Check if player can climb up or down
         elif key in [arcade.key.UP, arcade.key.I]:  # Either up key or I key to go up
-            if self.physics_engine.is_on_ladder():
-                self.player.change_y = PLAYER_MOVE_SPEED
+            self.game_player.move_up()
+
         elif key in [arcade.key.DOWN, arcade.key.K]:  # Either down key or K key to down
-            if self.physics_engine.is_on_ladder():
-                self.player.change_y = -PLAYER_MOVE_SPEED
+            self.game_player.move_down()
 
         # Check if player can jump
         elif key == arcade.key.SPACE:
-            if self.physics_engine.can_jump():
-                self.player.change_y = PLAYER_JUMP_SPEED
-                # Play the jump sound
-                arcade.play_sound(self.jump_sound)
+            self.game_player.jump()
 
     def on_key_release(self, key: int, modifiers: int):
         """Processes key releases
@@ -294,7 +291,7 @@ class PlatformerView(arcade.View):
             arcade.key.RIGHT,
             arcade.key.L,
         ]:
-            self.player.change_x = 0
+            self.game_player.reset_change_x()
 
         # Check if player can climb up or down
         elif key in [
@@ -304,7 +301,7 @@ class PlatformerView(arcade.View):
             arcade.key.K,
         ]:
             if self.physics_engine.is_on_ladder():
-                self.player.change_y = 0
+                self.game_player.reset_change_y()
     
     def on_update(self, delta_time: float):
         """Updates the position of all game objects
