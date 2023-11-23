@@ -2,11 +2,10 @@ import arcade
 from threading import Thread
 
 from arcade_game.arcade_platformer.config.config import SCREEN_WIDTH, SCREEN_HEIGHT, ASSETS_PATH
-from . import platform_view
+from . import platform_view, player_name_view
 from arcade_game.arcade_platformer.player.player import Player
 from arcade_game.arcade_platformer.helpers.speech_recognition import SpeechRecognition
 from log.config_log import logger
-
 
 
 class WelcomeView(arcade.View):
@@ -100,8 +99,7 @@ class WelcomeView(arcade.View):
     
     def start_game(self) -> None:
         # Stop intro music
-        self.intro_sound.stop(self.sound_player)
-        # Launch Game view
-        self.game_view = platform_view.PlatformerView(self.player, self.speech_recognition)
-        self.game_view.setup()
-        self.window.show_view(self.game_view)
+            self.intro_sound.stop(self.sound_player)
+            # Launch Enter Player Name view
+            self.player_name_view = player_name_view.PlayerNameView(self.player)
+            self.window.show_view(self.player_name_view)
