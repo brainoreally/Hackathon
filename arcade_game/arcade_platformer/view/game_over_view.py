@@ -3,6 +3,7 @@ import arcade
 from arcade_game.arcade_platformer.config.config import SCREEN_WIDTH, SCREEN_HEIGHT, ASSETS_PATH
 from . import platform_view
 from arcade_game.arcade_platformer.player.player import Player
+from arcade_game.arcade_platformer.helpers.speech_recognition import SpeechRecognition
 
 
 class GameOverView(arcade.View):
@@ -13,10 +14,11 @@ class GameOverView(arcade.View):
     You do not have to modify these to complete the mandatory challenges.
     """
 
-    def __init__(self, player: Player) -> None:
+    def __init__(self, player: Player, speech_recognition: SpeechRecognition) -> None:
         super().__init__()
 
         self.player = player
+        self.speech_recognition = speech_recognition
 
         # Load and play Game over music
         self.game_over_sound = arcade.load_sound(
@@ -95,6 +97,6 @@ class GameOverView(arcade.View):
             self.game_over_sound.stop(self.sound_player)
 
             # Re-launch the game
-            game_view = platform_view.PlatformerView(self.player)
+            game_view = platform_view.PlatformerView(self.player, self.speech_recognition)
             game_view.setup()
             self.window.show_view(game_view)

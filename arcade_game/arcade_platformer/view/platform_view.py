@@ -228,8 +228,6 @@ class PlatformerView(arcade.View):
             - Send it back to the beginning of the level
             - Face the player forward
         """
-        # Stop the speech recognition process
-        self.recognize_proc.terminate()
 
         # Play the death sound
         arcade.play_sound(self.death_sound)
