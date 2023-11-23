@@ -27,9 +27,32 @@ def speech_to_text_continuous(message_queue: Queue, api_key: str, speech_region:
     def recognized_speech(event: SpeechRecognitionEventArgs):
         logger.info(f"Recognized: {event.result.text}")
 
-        if "Hello World" in event.result.text.lower():
-            logger.info("hello world")
+        if "hello world" in event.result.text.lower():
             message_queue.put("hello world")
+
+        if "jump" in event.result.text.lower():
+            logger.info("jump")
+            message_queue.put("jump")
+
+        if "up" in event.result.text.lower():
+            logger.info("up")
+            message_queue.put("up")
+
+        if "down" in event.result.text.lower():
+            logger.info("down")
+            message_queue.put("down")
+
+        if "left" in event.result.text.lower():
+            logger.info("left")
+            message_queue.put("left")
+
+        if "right" in event.result.text.lower():
+            logger.info("right")
+            message_queue.put("right")
+            
+        if "stop" in event.result.text.lower():
+            logger.info("stop")
+            message_queue.put("stop")
 
     # Init engine
     speech_config = speechsdk.SpeechConfig(subscription=api_key, region=speech_region)

@@ -262,24 +262,21 @@ class PlatformerView(arcade.View):
 
         # Check for player left or right movement
         if key in [arcade.key.LEFT, arcade.key.A]:  # Either left key or A key to go left
-            self.player.change_x = -PLAYER_MOVE_SPEED
+            self.game_player.move_left()
+
         elif key in [arcade.key.RIGHT, arcade.key.D]:  # Either right key or D key to go right
-            self.player.change_x = PLAYER_MOVE_SPEED
+            self.game_player.move_right()
 
         # Check if player can climb up or down
         elif key in [arcade.key.UP, arcade.key.W]:  # Either up key or W key to go up
-            if self.physics_engine.is_on_ladder():
-                self.player.change_y = PLAYER_MOVE_SPEED
-        elif key in [arcade.key.DOWN, arcade.key.S]:  # Either down key or S key to down
-            if self.physics_engine.is_on_ladder():
-                self.player.change_y = -PLAYER_MOVE_SPEED
+            self.game_player.move_up()
+
+        elif key in [arcade.key.DOWN, arcade.key.D]:  # Either down key or D key to down
+            self.game_player.move_down()
 
         # Check if player can jump
         elif key == arcade.key.SPACE:
-            if self.physics_engine.can_jump():
-                self.player.change_y = PLAYER_JUMP_SPEED
-                # Play the jump sound
-                arcade.play_sound(self.jump_sound)
+            self.game_player.jump()
 
     def on_key_release(self, key: int, modifiers: int):
         """Processes key releases
@@ -295,7 +292,7 @@ class PlatformerView(arcade.View):
             arcade.key.RIGHT,
             arcade.key.D,
         ]:
-            self.player.change_x = 0
+            self.game_player.reset_change_x()
 
         # Check if player can climb up or down
         elif key in [
@@ -305,7 +302,7 @@ class PlatformerView(arcade.View):
             arcade.key.S,
         ]:
             if self.physics_engine.is_on_ladder():
-                self.player.change_y = 0
+                self.game_player.reset_change_y()
     
     def on_update(self, delta_time: float):
         """Updates the position of all game objects
@@ -313,6 +310,7 @@ class PlatformerView(arcade.View):
         Arguments:
             delta_time {float} -- How much time since the last call
         """
+        self.handle_voice_command()
 
         # Update the player animation
         self.player.update_animation(delta_time)
@@ -538,3 +536,22 @@ class PlatformerView(arcade.View):
             color=arcade.csscolor.WHITE,
             font_size=30
         )
+
+    def handle_voice_command(self):
+        message = self.message_queue.get()
+        if(message=="jump"):
+            self.game_player.jump()
+        elif(message=="right"):
+            self.game_player.move_right()
+        elif(message=="left"):
+            self.game_player.move_left()
+        elif(message=="up"):
+            self.game_player.move_up()
+        elif(message=="down"):
+            self.game_player.move_down()
+        elif(message=="stop"):
+            self.game_player.reset_change_x()
+            if self.physics_engine.is_on_ladder():
+                self.game_player.reset_change_y()
+
+        self.message_queue.put("do nothing")

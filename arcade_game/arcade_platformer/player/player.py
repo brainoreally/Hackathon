@@ -1,4 +1,5 @@
 import arcade
+import logging
 
 from arcade_game.arcade_platformer.config.config import PLAYER_START_X, PLAYER_START_Y, ASSETS_PATH, \
     PLAYER_MOVE_SPEED, PLAYER_JUMP_SPEED
@@ -86,6 +87,9 @@ class Player:
     def move_right(self):
         self.player.change_x = PLAYER_MOVE_SPEED
 
+    def reset_change_x(self):
+        self.player.change_x = 0
+
     def move_up(self):
         # Check if player can climb up or down
         if self.physics_engine.is_on_ladder():
@@ -95,7 +99,11 @@ class Player:
         if self.physics_engine.is_on_ladder():
             self.player.change_y = -PLAYER_MOVE_SPEED
 
+    def reset_change_y(self):
+        self.player.change_y = 0
+
     def jump(self):
+        logging.info("jump")
         if self.physics_engine.can_jump():
             self.player.change_y = PLAYER_JUMP_SPEED
             # Play the jump sound
