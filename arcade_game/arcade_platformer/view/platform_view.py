@@ -19,7 +19,7 @@ class PlatformerView(arcade.View):
         """The init method runs only once when the game starts"""
         super().__init__()
 
-        self.game_player = player
+        self.player = player
 
         self.speech_recognition = speech_recognition
         # logging.info(self.speech_recognition)
@@ -37,7 +37,7 @@ class PlatformerView(arcade.View):
         self.window.set_mouse_visible(False)
 
         # One sprite for the player, no more is needed
-        self.player = self.game_player.player
+        self.player_sprite = self.player.sprite
 
         # We need a physics engine as well
         self.physics_engine = None
@@ -136,14 +136,14 @@ class PlatformerView(arcade.View):
         self.map_width = (game_map.width - 1) * game_map.tile_width
 
         # Create the player sprite if they're not already set up
-        if not self.player:
-            self.player = Player().create_player_sprite()
+        if not self.player_sprite:
+            self.player_sprite = Player().create_player_sprite()
 
         # Move the player sprite back to the beginning
-        self.player.center_x = PLAYER_START_X
-        self.player.center_y = PLAYER_START_Y
-        self.player.change_x = 0
-        self.player.change_y = 0
+        self.player_sprite.center_x = PLAYER_START_X
+        self.player_sprite.center_y = PLAYER_START_Y
+        self.player_sprite.change_x = 0
+        self.player_sprite.change_y = 0
 
         # Reset the viewport (horizontal scroll)
         self.view_left = 0
@@ -151,12 +151,12 @@ class PlatformerView(arcade.View):
 
         # Load the physics engine for this map
         self.physics_engine = arcade.PhysicsEnginePlatformer(
-            player_sprite=self.player,
+            player_sprite=self.player_sprite,
             platforms=self.walls,
             gravity_constant=GRAVITY,
             ladders=self.ladders,
         )
-        self.game_player.set_physics_engine(self.physics_engine)
+        self.player.set_physics_engine(self.physics_engine)
 
     def get_game_time(self) -> int:
         """Returns the number of seconds since the game was initialised"""
@@ -172,8 +172,8 @@ class PlatformerView(arcade.View):
         left_boundary = self.view_left + LEFT_VIEWPORT_MARGIN
 
         # Are we to the left of this boundary? Then we should scroll left.
-        if self.player.left < left_boundary:
-            self.view_left -= left_boundary - self.player.left
+        if self.player_sprite.left < left_boundary:
+            self.view_left -= left_boundary - self.player_sprite.left
             # But don't scroll past the left edge of the map
             if self.view_left < 0:
                 self.view_left = 0
@@ -183,25 +183,25 @@ class PlatformerView(arcade.View):
         right_boundary = self.view_left + SCREEN_WIDTH - RIGHT_VIEWPORT_MARGIN
 
         # Are we to the right of this boundary? Then we should scroll right.
-        if self.player.right > right_boundary:
-            self.view_left += self.player.right - right_boundary
+        if self.player_sprite.right > right_boundary:
+            self.view_left += self.player_sprite.right - right_boundary
             # Don't scroll past the right edge of the map
             if self.view_left > self.map_width - SCREEN_WIDTH:
                 self.view_left = self.map_width - SCREEN_WIDTH
 
         # Scroll up
         top_boundary = self.view_bottom + SCREEN_HEIGHT - TOP_VIEWPORT_MARGIN
-        if self.player.top > top_boundary:
-            self.view_bottom += self.player.top - top_boundary
+        if self.player_sprite.top > top_boundary:
+            self.view_bottom += self.player_sprite.top - top_boundary
 
         # Scroll down
         bottom_boundary = self.view_bottom + BOTTOM_VIEWPORT_MARGIN
-        if self.player.bottom < bottom_boundary:
-            self.view_bottom -= bottom_boundary - self.player.bottom
+        if self.player_sprite.bottom < bottom_boundary:
+            self.view_bottom -= bottom_boundary - self.player_sprite.bottom
 
         # Catch a fall of the platform
         # -300 rather than 0 is to let the player fall a bit longer, it looks better
-        if self.player.bottom < -300:
+        if self.player_sprite.bottom < -300:
             self.handle_player_death()
             return
 
@@ -239,7 +239,7 @@ class PlatformerView(arcade.View):
             # Back to the level's beginning
             self.setup()
             # Set the player to face right, otherwise it looks odd as the player still looks like falling
-            self.player.state = arcade.FACE_RIGHT
+            self.player_sprite.state = arcade.FACE_RIGHT
 
     def on_key_press(self, key: int, modifiers: int):
         """Processes key presses
@@ -251,21 +251,21 @@ class PlatformerView(arcade.View):
 
         # Check for player left or right movement
         if key in [arcade.key.LEFT, arcade.key.A]:  # Either left key or A key to go left
-            self.game_player.move_left()
+            self.player.move_left()
 
         elif key in [arcade.key.RIGHT, arcade.key.D]:  # Either right key or D key to go right
-            self.game_player.move_right()
+            self.player.move_right()
 
         # Check if player can climb up or down
         elif key in [arcade.key.UP, arcade.key.W]:  # Either up key or W key to go up
-            self.game_player.move_up()
+            self.player.move_up()
 
         elif key in [arcade.key.DOWN, arcade.key.D]:  # Either down key or D key to down
-            self.game_player.move_down()
+            self.player.move_down()
 
         # Check if player can jump
         elif key == arcade.key.SPACE:
-            self.game_player.jump()
+            self.player.jump()
 
     def on_key_release(self, key: int, modifiers: int):
         """Processes key releases
@@ -281,7 +281,7 @@ class PlatformerView(arcade.View):
             arcade.key.RIGHT,
             arcade.key.D,
         ]:
-            self.game_player.reset_change_x()
+            self.player.reset_change_x()
 
         # Check if player can climb up or down
         elif key in [
@@ -291,7 +291,7 @@ class PlatformerView(arcade.View):
             arcade.key.S,
         ]:
             if self.physics_engine.is_on_ladder():
-                self.game_player.reset_change_y()
+                self.player.reset_change_y()
     
     def on_update(self, delta_time: float):
         """Updates the position of all game objects
@@ -302,18 +302,18 @@ class PlatformerView(arcade.View):
         self.handle_voice_command()
 
         # Update the player animation
-        self.player.update_animation(delta_time)
+        self.player_sprite.update_animation(delta_time)
 
         # Update player movement based on the physics engine
         self.physics_engine.update()
 
         # Restrict user movement so they can't walk off-screen
-        if self.player.left < 0:
-            self.player.left = 0
+        if self.player_sprite.left < 0:
+            self.player_sprite.left = 0
 
         # Check if we've picked up a coin
         coins_hit = arcade.check_for_collision_with_list(
-            sprite=self.player, sprite_list=self.coins
+            sprite=self.player_sprite, sprite_list=self.coins
         )
 
         for coin in coins_hit:
@@ -329,7 +329,7 @@ class PlatformerView(arcade.View):
         # Check for trap collision, only in maps with traps
         if self.traps is not None:
             trap_hit = arcade.check_for_collision_with_list(
-                sprite=self.player, sprite_list=self.traps
+                sprite=self.player_sprite, sprite_list=self.traps
             )
 
             if trap_hit:
@@ -338,7 +338,7 @@ class PlatformerView(arcade.View):
 
         # Now check if we are at the ending goal
         goals_hit = arcade.check_for_collision_with_list(
-            sprite=self.player, sprite_list=self.goals
+            sprite=self.player_sprite, sprite_list=self.goals
         )
 
         if goals_hit:
@@ -364,7 +364,7 @@ class PlatformerView(arcade.View):
         """
         # Show the Game Over Screen
         self.calculate_score()
-        _game_over_view = game_over_view.GameOverView(self.game_player, self.speech_recognition)
+        _game_over_view = game_over_view.GameOverView(self.player, self.speech_recognition)
         self.window.show_view(_game_over_view)
 
     def handle_victory(self):
@@ -372,7 +372,7 @@ class PlatformerView(arcade.View):
         Victory !
         """
         # Show the winner Screen
-        _winner_view = winner_view.WinnerView(self.game_player, self.speech_recognition)
+        _winner_view = winner_view.WinnerView(self.player, self.speech_recognition)
         # Calculate final score
         self.window.show_view(_winner_view)
 
@@ -382,8 +382,8 @@ class PlatformerView(arcade.View):
         plus a time bonus
         """
         self.level_score = 0
-        self.game_player.score += (self.level_score + round(1000 / self.get_game_time()) * (self.life_count + 1))
-        return self.game_player.score
+        self.player.score += (self.level_score + round(1000 / self.get_game_time()) * (self.life_count + 1))
+        return self.player.score
 
     def on_draw(self):
         """
@@ -406,7 +406,7 @@ class PlatformerView(arcade.View):
             self.traps.draw()
 
         # Draw the dynamic elements : play, score, life count
-        self.player.draw()
+        self.player_sprite.draw()
         arcade.draw_rectangle_filled((SCREEN_WIDTH / 2) + self.view_left, 625 + self.view_bottom, SCREEN_WIDTH, 50, arcade.color.BLACK)
         self.draw_score()
         self.draw_life_count()
@@ -467,7 +467,7 @@ class PlatformerView(arcade.View):
         )
 
         arcade.draw_text(
-            str(self.game_player.score),
+            str(self.player.score),
             start_x=670 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.RED,
@@ -475,7 +475,7 @@ class PlatformerView(arcade.View):
         )
         # Now in white, slightly shifted
         arcade.draw_text(
-            str(self.game_player.score),
+            str(self.player.score),
             start_x=672 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.WHITE,
@@ -563,18 +563,18 @@ class PlatformerView(arcade.View):
         if not self.speech_recognition.message_queue.empty():
             message = self.speech_recognition.message_queue.get()
             if(message=="jump"):
-                self.game_player.jump()
+                self.player.jump()
             elif(message=="right"):
-                self.game_player.move_right()
+                self.player.move_right()
             elif(message=="left"):
-                self.game_player.move_left()
+                self.player.move_left()
             elif(message=="up"):
-                self.game_player.move_up()
+                self.player.move_up()
             elif(message=="down"):
-                self.game_player.move_down()
+                self.player.move_down()
             elif(message=="stop"):
-                self.game_player.reset_change_x()
+                self.player.reset_change_x()
                 if self.physics_engine.is_on_ladder():
-                    self.game_player.reset_change_y()
+                    self.player.reset_change_y()
 
         # self.speech_recognition.message_queue.put("do nothing")
