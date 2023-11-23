@@ -101,5 +101,5 @@ class WelcomeView(arcade.View):
         # Stop intro music
             self.intro_sound.stop(self.sound_player)
             # Launch Enter Player Name view
-            self.player_name_view = player_name_view.PlayerNameView(self.player)
+            self.player_name_view = player_name_view.PlayerNameView(self.player, self.speech_recognition)
             self.window.show_view(self.player_name_view)

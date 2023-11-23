@@ -3,6 +3,7 @@ import arcade
 from arcade_game.arcade_platformer.config.config import SCREEN_WIDTH, SCREEN_HEIGHT, ASSETS_PATH
 from . import platform_view
 from arcade_game.arcade_platformer.player.player import Player
+from arcade_game.arcade_platformer.helpers.speech_recognition import SpeechRecognition
 import arcade.gui as gui
 from arcade import load_texture
 
@@ -11,10 +12,12 @@ class PlayerNameView(arcade.View):
     Displays a text entry box to accept the player name
     """
 
-    def __init__(self, player: Player) -> None:
+    def __init__(self, player: Player, speech_recognition: SpeechRecognition) -> None:
         super().__init__()
 
         self.player = player
+        
+        self.speech_recognition = speech_recognition
 
         self.game_view = None
 
@@ -122,7 +125,7 @@ class PlayerNameView(arcade.View):
 
     def launch_game(self):
         # Launch Game view
-        self.game_view = platform_view.PlatformerView(self.player)
+        self.game_view = platform_view.PlatformerView(self.player, self.speech_recognition)
         self.game_view.setup()
         self.window.show_view(self.game_view)
 
