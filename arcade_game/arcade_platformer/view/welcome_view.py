@@ -29,7 +29,7 @@ class WelcomeView(arcade.View):
         self.intro_sound = arcade.load_sound(
             str(ASSETS_PATH / "sounds" / "intro.wav")
         )
-        self.sound_player = self.intro_sound.play(volume=0, loop=True)
+        self.sound_player = self.intro_sound.play(volume=0.3, loop=True)
 
         # Find the title image in the images folder
         title_image_path = ASSETS_PATH / "images" / "welcome.png"
