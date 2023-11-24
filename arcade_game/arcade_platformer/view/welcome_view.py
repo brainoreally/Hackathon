@@ -49,7 +49,6 @@ class WelcomeView(arcade.View):
             logger.info(f"welcome view message {message}")
             if(message=="start"):
                 self.start_game()
-                self.speech_recognition.message_queue.put("do nothing")
             if(message=="leaderboard"):
                 self.show_leaderboard()
 
