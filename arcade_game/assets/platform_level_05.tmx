@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="46" height="25" tilewidth="128" tileheight="128" infinite="0" nextlayerid="7" nextobjectid="17">
+ <tileset firstgid="1" source="arcade_platformer.tsx"/>
+ <layer id="1" name="ground" width="46" height="25">
+  <data encoding="base64" compression="zlib">
+   eJztltsKwjAMQAMqiJvXf9t79v8/4YQNY0i7NGntKh7IS9nS06RkA/jTOqcpOhZ9VSMfWFvACEK77r8M1hYwgrUFAoxzhMAveawxCGtb9OaekrcEQtmZM7B4sZ/iTuIxr9/I2qGQjxba41gtu9IiiWi9Q9De8B6crVIKvN5WvHvROcbv9VK/lD2WHBzejxw1is0xyx67QHhySuT21pDLO+a+VW+eL3TPNe/S7wAH2bOpOWP51/KNkNYfXgNNLdYcLN4avDla8Zb6cYnkomtX+PwX8ZBjbh7hfQZ6J/n5ciLVLxZP6qwcbg==
+  </data>
+ </layer>
+ <layer id="2" name="background" width="46" height="25">
+  <data encoding="base64" compression="zlib">
+   eJzt1TEOACAIA0Be5teML3D0u65smiBpMb3ZoQFSzUT4LHQAEaCJDuA0dIBPqeO4MeyHqQdEslS782g3nP7USvNg6MnXIvNH725cvsvOiZ5DlL/rDkuRYwOiEwl/
+  </data>
+ </layer>
+ <layer id="3" name="ladders" width="46" height="25">
+  <data encoding="base64" compression="zlib">
+   eJzt1MEJACAMQ1En1v1vTpBLsTaB/yb4hNK1ALx0pgOKUrsB9Ev9D3s6oIjuP9Rdu9+72tl9/9RuJaHb/ZYVh20r2zl0VxocutHvAsuMCDI=
+  </data>
+ </layer>
+ <layer id="4" name="traps" width="46" height="25">
+  <data encoding="base64" compression="zlib">
+   eJztzrENABAUQEGjWsEsGuPqJYofhMhd8vqXEgBAXLs9MPHqF3+rQwCcVxY7+TTKG4vqvQASjw==
+  </data>
+ </layer>
+ <layer id="5" name="goal" width="46" height="25">
+  <data encoding="base64" compression="zlib">
+   eJztziEBAAAIA7BHon86CtwhMFuCJQAAAAA08x04WjX4ADE=
+  </data>
+ </layer>
+ <objectgroup id="6" name="coins">
+  <object id="2" gid="56" x="4986.91" y="1928.29" width="128" height="128"/>
+  <object id="3" gid="56" x="3203.87" y="1020.25" width="128" height="128"/>
+  <object id="4" gid="57" x="2430.56" y="2417.2" width="128" height="128"/>
+  <object id="5" gid="57" x="4085.28" y="1660.52" width="128" height="128"/>
+  <object id="6" gid="57" x="4592.51" y="3065.78" width="128" height="128"/>
+  <object id="7" gid="55" x="642.791" y="2683.28" width="128" height="128"/>
+  <object id="8" gid="55" x="2688.33" y="1161.6" width="128" height="128"/>
+  <object id="9" gid="55" x="4866.91" y="2558.56" width="128" height="128"/>
+  <object id="10" gid="73" x="1280" y="2816" width="128" height="128">
+   <properties>
+    <property name="point_value" value="50"/>
+   </properties>
+  </object>
+  <object id="11" gid="78" x="1792" y="1664" width="128" height="128">
+   <properties>
+    <property name="point_value" value="60"/>
+   </properties>
+  </object>
+  <object id="12" gid="72" x="3328" y="2560" width="128" height="128">
+   <properties>
+    <property name="point_value" value="30"/>
+   </properties>
+  </object>
+  <object id="13" gid="57" x="4480" y="2304" width="128" height="128">
+   <properties>
+    <property name="point_value" type="int" value="10"/>
+   </properties>
+  </object>
+  <object id="15" gid="31" x="2816" y="128" width="128" height="128">
+   <properties>
+    <property name="point_value" value="15"/>
+   </properties>
+  </object>
+  <object id="16" gid="31" x="2944" y="128" width="128" height="128">
+   <properties>
+    <property name="point_value" value="15"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

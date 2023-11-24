@@ -357,7 +357,7 @@ class PlatformerView(arcade.View):
 
         if goals_hit:
             self.calculate_score()
-            if self.level == 4:  # Game is finished : Victory !
+            if self.level == 5:  # Game is finished : Victory !
                 self.handle_victory()
             else:
                 # Play the level victory sound
