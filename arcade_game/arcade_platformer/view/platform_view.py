@@ -5,8 +5,9 @@ import arcade
 
 from arcade_game.arcade_platformer.config.config import SCREEN_WIDTH, SCREEN_HEIGHT, TOTAL_LIFE_COUNT, ASSETS_PATH, \
     MAP_SCALING, PLAYER_START_X, PLAYER_START_Y, GRAVITY, LEFT_VIEWPORT_MARGIN, RIGHT_VIEWPORT_MARGIN, \
-    TOP_VIEWPORT_MARGIN, BOTTOM_VIEWPORT_MARGIN, PLAYER_MOVE_SPEED, PLAYER_JUMP_SPEED
+    TOP_VIEWPORT_MARGIN, BOTTOM_VIEWPORT_MARGIN
 from arcade_game.arcade_platformer.player.player import Player
+from arcade_game.arcade_platformer.enemy.enemy import Enemy
 from . import game_over_view, winner_view
 from arcade_game.arcade_platformer.helpers.speech_recognition import SpeechRecognition
 
@@ -145,6 +146,9 @@ class PlatformerView(arcade.View):
         self.player_sprite.center_y = PLAYER_START_Y
         self.player_sprite.change_x = 0
         self.player_sprite.change_y = 0
+
+        # Set up our enemies
+        self.enemies = self.create_enemy_sprites()
 
         # Reset the viewport (horizontal scroll)
         self.view_left = 0
@@ -337,6 +341,15 @@ class PlatformerView(arcade.View):
                 self.handle_player_death()
                 return
 
+        if self.enemies is not None:
+            enemies_hit = arcade.check_for_collision_with_list(
+                sprite=self.player_sprite, sprite_list=self.enemies
+            )
+
+            if enemies_hit:
+                self.handle_player_death()
+                return
+
         # Now check if we are at the ending goal
         goals_hit = arcade.check_for_collision_with_list(
             sprite=self.player_sprite, sprite_list=self.goals
@@ -358,6 +371,16 @@ class PlatformerView(arcade.View):
         else:
             # Set the viewport, scrolling if necessary
             self.scroll_viewport()
+
+        # Are there enemies? Update them as well
+        self.enemies.update_animation(delta_time)
+        for enemy in self.enemies:
+            enemy.center_x += enemy.change_x
+            walls_hit = arcade.check_for_collision_with_list(
+                sprite=enemy, sprite_list=self.walls
+            )
+            if walls_hit:
+                enemy.change_x *= -1
 
     def handle_game_over(self):
         """
@@ -397,6 +420,7 @@ class PlatformerView(arcade.View):
         self.walls.draw()
         self.coins.draw()
         self.goals.draw()
+        self.enemies.draw()
 
         # Not all maps have ladders
         if self.ladders is not None:
@@ -577,5 +601,15 @@ class PlatformerView(arcade.View):
                 self.player.reset_change_x()
                 if self.physics_engine.is_on_ladder():
                     self.player.reset_change_y()
+    
+    def create_enemy_sprites(self) -> arcade.SpriteList:
+        """Creates enemy sprites appropriate for the current level
 
-        # self.speech_recognition.message_queue.put("do nothing")
+        Returns:
+            A Sprite List of enemies"""
+        enemies = arcade.SpriteList()
+
+        if self.level == 2:
+            enemies.append(Enemy(PLAYER_START_X + 900, PLAYER_START_Y + 64, "asteroid"))
+
+        return enemies
