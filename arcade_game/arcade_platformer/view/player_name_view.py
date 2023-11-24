@@ -61,7 +61,6 @@ class PlayerNameView(arcade.View):
         self.player_name_label = arcade.gui.UILabel(
             text="Enter Player Name",
             text_color=arcade.color.DARK_RED,
-            width=350,
             height=40,
             font_size=16,
             font_name="Kenney Future")
@@ -69,16 +68,16 @@ class PlayerNameView(arcade.View):
         bg_tex = load_texture(":resources:gui_basic_assets/window/grey_panel.png")
         # Create an text input field
         self.player_name_input_field = arcade.gui.UIInputText(
-          text_color=arcade.color.DARK_RED,
+          text_color=arcade.color.BLACK,
           font_size=16,
           width=200,
           height=40,
-          text='')
+          focus=True,
+          text=' ')
         
         enter_label = arcade.gui.UILabel(
             text="Then hit <ENTER> to start the game",
             text_color=arcade.color.DARK_RED,
-            #width=350,
             height=40,
             font_size=16,
             font_name="Kenney Future")
@@ -90,9 +89,9 @@ class PlayerNameView(arcade.View):
             )
         
         self.v_box = gui.UIBoxLayout()
-        self.v_box.add(self.player_name_label.with_space_around(bottom=0))
+        self.v_box.add(self.player_name_label.with_space_around(bottom=20))
         self.v_box.add(tp)
-        self.v_box.add(enter_label)
+        self.v_box.add(enter_label.with_space_around(top=30))
         
         self.manager.add(
             arcade.gui.UIAnchorWidget(
