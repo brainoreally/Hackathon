@@ -2,7 +2,7 @@ import arcade
 from threading import Thread
 
 from arcade_game.arcade_platformer.config.config import SCREEN_WIDTH, SCREEN_HEIGHT, ASSETS_PATH
-from . import platform_view, player_name_view
+from . import winning_leaderboard_view, player_name_view
 from arcade_game.arcade_platformer.player.player import Player
 from arcade_game.arcade_platformer.helpers.speech_recognition import SpeechRecognition
 from log.config_log import logger
@@ -50,6 +50,8 @@ class WelcomeView(arcade.View):
             if(message=="start"):
                 self.start_game()
                 self.speech_recognition.message_queue.put("do nothing")
+            if(message=="leaderboard"):
+                self.show_leaderboard()
 
     def on_update(self, delta_time: float) -> None:
         """Manages the timer to toggle the instructions
@@ -96,10 +98,16 @@ class WelcomeView(arcade.View):
     def on_key_press(self, key: int, modifiers: int) -> None:
         if key == arcade.key.RETURN:
             self.start_game()
+        if key == arcade.key.L:
+            self.show_leaderboard()
     
     def start_game(self) -> None:
         # Stop intro music
             self.intro_sound.stop(self.sound_player)
             # Launch Enter Player Name view
-            self.player_name_view = player_name_view.PlayerNameView(self.player, self.speech_recognition)
-            self.window.show_view(self.player_name_view)
+            _player_name_view = player_name_view.PlayerNameView(self.player, self.speech_recognition)
+            self.window.show_view(_player_name_view)
+
+    def show_leaderboard(self) -> None:
+            _leaderboard_view = winning_leaderboard_view.WinningLeaderboardView(self.player, self.speech_recognition)
+            self.window.show_view(_leaderboard_view)

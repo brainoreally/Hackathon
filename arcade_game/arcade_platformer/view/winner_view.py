@@ -1,7 +1,7 @@
 import arcade
 
 from arcade_game.arcade_platformer.config.config import SCREEN_WIDTH, SCREEN_HEIGHT, ASSETS_PATH
-from . import platform_view
+from . import winning_leaderboard_view
 from arcade_game.arcade_platformer.player.player import Player
 from arcade_game.arcade_platformer.helpers.speech_recognition import SpeechRecognition
 
@@ -94,7 +94,7 @@ class WinnerView(arcade.View):
                 font_size=30,
             )
             arcade.draw_text(
-                "Press Enter to start again.",
+                "Press Enter.",
                 start_x=320,
                 start_y=120,
                 color=arcade.color.INDIGO,
@@ -113,6 +113,5 @@ class WinnerView(arcade.View):
             self.victory_sound.stop(self.sound_player)
 
             # Re-launch the game
-            game_view = platform_view.PlatformerView(self.player, self.speech_recognition)
-            game_view.setup()
+            game_view = winning_leaderboard_view.WinningLeaderboardView(self.player, self.speech_recognition)
             self.window.show_view(game_view)

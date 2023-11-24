@@ -85,6 +85,7 @@ class PlatformerView(arcade.View):
         arcade.play_sound(self.ready_sound)
         sleep(1)
         arcade.play_sound(self.go_sound)
+        self.setup()
 
     def setup(self):
         """Sets up the game for the current level. This runs every time we load a new level"""

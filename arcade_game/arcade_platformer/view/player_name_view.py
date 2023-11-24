@@ -16,6 +16,7 @@ class PlayerNameView(arcade.View):
         super().__init__()
 
         self.player = player
+        self.player.score = 0
         
         self.speech_recognition = speech_recognition
 
@@ -38,7 +39,7 @@ class PlayerNameView(arcade.View):
         Arguments:
             delta_time -- time passed since last update
         """
-
+        self.handle_voice_command()
         pass
 
     def on_draw(self) -> None:
@@ -49,23 +50,6 @@ class PlayerNameView(arcade.View):
         arcade.set_background_color(arcade.color.DARK_BLUE_GRAY)
 
         self.manager.draw()
-
-    '''
-    def on_key_press(self, key: int, modifiers: int) -> None:
-        print('key pressed')
-        """Start the game when the user presses the enter key
-
-        Arguments:
-            key -- Which key was pressed
-            modifiers -- What modifiers were active
-        """
-        if key == arcade.key.RETURN:
-            
-            # Launch Game view
-            self.game_view = platform_view.PlatformerView(self.player)
-            self.game_view.setup()
-            self.window.show_view(self.game_view)
-    '''
 
     def draw_enter_player_name(self):
         """
@@ -144,3 +128,11 @@ class PlayerNameView(arcade.View):
         self.update_text()
         if key == arcade.key.RETURN:
             self.launch_game()
+
+    def handle_voice_command(self):
+        if not self.speech_recognition.message_queue.empty():
+            message = self.speech_recognition.message_queue.get()
+            if("set name" in message):
+                self.player.name = message.replace('set name: ', '').replace('.', '').capitalize()
+                if self.player.name:
+                    self.launch_game()

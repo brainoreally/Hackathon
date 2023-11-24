@@ -43,8 +43,18 @@ class SpeechRecognition():
         def recognized_speech(event: SpeechRecognitionEventArgs):
             logger.info(f"Recognized: {event.result.text}")
 
-            if "hello world" in event.result.text.lower():
-                message_queue.put("hello world")
+            if "my name is" in event.result.text.lower():
+                name = event.result.text.lower().replace('my name is', '').capitalize()
+                logger.info(f"setting player name as: {name}")
+                message_queue.put("set name: " + name)
+
+            if "leaderboard" in event.result.text.lower():
+                logger.info("leaderboard")
+                message_queue.put("leaderboard")
+
+            if "menu" in event.result.text.lower():
+                logger.info("menu")
+                message_queue.put("menu")
 
             if "jump" in event.result.text.lower():
                 logger.info("jump")
@@ -93,4 +103,4 @@ class SpeechRecognition():
         speech_recognizer.start_continuous_recognition()
         
         while not done:
-            time.sleep(.1)
+            time.sleep(.5)

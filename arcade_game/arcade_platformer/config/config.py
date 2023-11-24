@@ -29,7 +29,7 @@ TOP_VIEWPORT_MARGIN = 150
 BOTTOM_VIEWPORT_MARGIN = 150
 
 # Number of lives the player can use to win the game
-TOTAL_LIFE_COUNT = 1
+TOTAL_LIFE_COUNT = 5
 
 # Assets path
 ASSETS_PATH = pathlib.Path(__file__).resolve().parent.parent.parent / "assets"
