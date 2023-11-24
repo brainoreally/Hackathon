@@ -132,6 +132,6 @@ class PlayerNameView(arcade.View):
         if not self.speech_recognition.message_queue.empty():
             message = self.speech_recognition.message_queue.get()
             if("set name" in message):
-                self.player.name = message.replace('set name: ', '').replace('.', '').capitalize()
+                self.player.name = message.replace('set name: ', '').replace('.', '').lstrip().capitalize()
                 if self.player.name:
                     self.launch_game()

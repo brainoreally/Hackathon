@@ -44,7 +44,7 @@ class SpeechRecognition():
             logger.info(f"Recognized: {event.result.text}")
 
             if "my name is" in event.result.text.lower():
-                name = event.result.text.lower().replace('my name is', '').capitalize()
+                name = event.result.text.lower().replace('my name is ', '').capitalize()
                 logger.info(f"setting player name as: {name}")
                 message_queue.put("set name: " + name)
 
