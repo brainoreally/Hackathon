@@ -79,6 +79,11 @@ class PlatformerView(arcade.View):
         self.death_sound = arcade.load_sound(
             str(ASSETS_PATH / "sounds" / "death.wav")
         )
+        self.background_music = arcade.load_sound(
+            str(ASSETS_PATH / "sounds" / "background.wav")
+        )
+        self.background_music_player = arcade.play_sound(self.background_music, 0.3, 0, True)
+
 
         # Play the game start sound animation
         # There is a lag with the 1st sound played so to avoid having a lag during the game
@@ -386,6 +391,8 @@ class PlatformerView(arcade.View):
         """
         Game Over !
         """
+        arcade.stop_sound(self.background_music_player)
+
         # Show the Game Over Screen
         self.calculate_score()
         _game_over_view = game_over_view.GameOverView(self.player, self.speech_recognition)
@@ -395,6 +402,8 @@ class PlatformerView(arcade.View):
         """
         Victory !
         """
+        arcade.stop_sound(self.background_music_player)
+
         # Show the winner Screen
         _winner_view = winner_view.WinnerView(self.player, self.speech_recognition)
         # Calculate final score
