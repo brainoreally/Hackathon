@@ -3,7 +3,7 @@
  <tileset firstgid="1" source="arcade_platformer.tsx"/>
  <layer id="1" name="ground" width="46" height="25">
   <data encoding="base64" compression="zlib">
-   eJztllsKwjAQRQMqiK3PvfV/uv9NWKHB8TJJJi/TiAfuT9DJ6UxIa8yf3jktGSBjU6M8qLVAImT6df9lqLVAItRawMG8xgV9ySPEJKxt0Rs9JW8JMnXvnAnyYr/kzvJY129s7VDJRwufsa+XQ22RSLTeLvhscAbnVCkFud6p5O7F7zE817Z/MXvYGgjOo0SPfPdYyh47R3JqSpT21lDK2+e+VW+s5zrnmv/y9wBC8NvYmr76oXozxLWXBXug6UXIIcVbQ26NXryleVw8tfja1Xx+i+RQ4t48mvcz8POIz1cSqX++PAEc8hzP
+   eJztlt0KwjAMRgsqiJu/77b77P1fwgkbxpBmadLaVTyQm6Jfz5LSLYQ/rXOaqiPVVzXyAbUFjEBo1/2XgdoCRqC2QIRxrhjwJY81BmZti97Uk/PmgFD2zhlIvdhPdUf1mNdvaO1QyEcLnrHUy660SCJa7xh4NnQGZ6uUAq+3Fe9e+B6j53rpX8oeSwaFziNHj6R7zLLHLlKeTI7c3hpyeUvuW/WmebFzrvkvfg9QgPw2NVPKX8sbmZIyaA80vVhzsHhr8Ga04s3N4yJk4bVr+PwW8ZDj3jyG9zPgs0ifLydc/6R6Ak2lHTA=
   </data>
  </layer>
  <layer id="2" name="background" width="46" height="25">
