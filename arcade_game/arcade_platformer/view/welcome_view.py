@@ -108,5 +108,6 @@ class WelcomeView(arcade.View):
             self.window.show_view(_player_name_view)
 
     def show_leaderboard(self) -> None:
+            self.intro_sound.stop(self.sound_player)
             _leaderboard_view = winning_leaderboard_view.WinningLeaderboardView(self.player, self.speech_recognition)
             self.window.show_view(_leaderboard_view)

@@ -579,7 +579,7 @@ class PlatformerView(arcade.View):
 
         arcade.draw_text(
             str(timer_text),
-            start_x=260 + self.view_left,
+            start_x=270 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.RED,
             font_size=self.font_size 
@@ -587,7 +587,7 @@ class PlatformerView(arcade.View):
         # Now in white, slightly shifted
         arcade.draw_text(
             str(timer_text),
-            start_x=262 + self.view_left,
+            start_x=272 + self.view_left,
             start_y=615 + self.view_bottom,
             color=arcade.csscolor.WHITE,
             font_size=self.font_size 
